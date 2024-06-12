@@ -1,0 +1,12 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Объявление {{ bulletin.pk }}
+{% endblock title %}
+
+
+{% block content %}
+<h1>{{bulletin.title}}</h1>
+<h1>{{bulletin.text}}</h1>
+{% endblock content %}

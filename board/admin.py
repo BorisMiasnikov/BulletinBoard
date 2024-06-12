@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .models import Bulletin
+from .models import Bulletin, Feedback, Category
 
-# Register your models here.
+admin.site.register(Bulletin)
+admin.site.register(Feedback)
+admin.site.register(Category)
