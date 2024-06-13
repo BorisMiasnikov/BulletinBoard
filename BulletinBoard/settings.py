@@ -135,6 +135,6 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = 'sign/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/bulletins/'
 
 

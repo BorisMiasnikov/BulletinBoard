@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
@@ -26,7 +27,7 @@ class BulletinDetail(DetailView):
 
 
 #создание постов нужно делать через формы, это связано с методом POST
-class BulletinCreate(CreateView):
+class BulletinCreate(LoginRequiredMixin, CreateView):
     form_class = BulletinForm
     model = Bulletin
     template_name = 'bulletin_cteate.html'
