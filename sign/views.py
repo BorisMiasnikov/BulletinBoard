@@ -34,6 +34,7 @@ class GetCode(CreateView):
 
     def get_context_data(self, **kwargs):
         name_user = self.kwargs.get('user')
+        print(name_user)
         if not OneTimeCode.objects.filter(user=name_user).exists():
             code = ''.join(random.sample(hexdigits, 5))
             OneTimeCode.objects.create(user=name_user, code=code)
@@ -64,8 +65,8 @@ class GetCode(CreateView):
         name_user = self.kwargs.get('user')
         if not OneTimeCode.objects.filter(user=name_user).exists():
             code = ''.join(random.sample(hexdigits, 6))
-            OneTimeCode.objects.create(name_user=name_user, code=code)
-            user = OneTimeCode.objects.get(username=name_user)
+            OneTimeCode.objects.create(user=name_user, code=code)
+            user = OneTimeCode.objects.get(user=name_user)
             send_mail(
                 subject=f'Код активации',
                 message=f'',
