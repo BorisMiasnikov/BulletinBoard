@@ -26,7 +26,8 @@ class BaseRegisterView(CreateView):
             user = form.save(commit=False)  # забираем объект не сохраненной формы
             user.is_activ = False  # делаем юзера не активным и сохраняем
             user.save()
-        return redirect('code', request.POST['username'])
+            return redirect('code', request.POST['username'])
+        return render(self.request, 'invalid_code.html')
 
 
 class GetCode(CreateView):
