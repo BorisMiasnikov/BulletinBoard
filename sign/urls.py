@@ -18,7 +18,7 @@ urlpatterns = [
          TemplateView.as_view(template_name='logout_confirm.html'),
          name='logout_confirm'),
     path('code/<str:user>',
-         GetCode.as_view,
+         GetCode.as_view(),
          name='code'),
 ]
 
