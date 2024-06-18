@@ -66,7 +66,7 @@ class GetCode(CreateView):
         if not OneTimeCode.objects.filter(user=name_user).exists():
             code = ''.join(random.sample(hexdigits, 6))
             OneTimeCode.objects.create(user=name_user, code=code)
-            user = OneTimeCode.objects.get(user=name_user)
+            user = User.objects.get(user=name_user)
             send_mail(
                 subject=f'Код активации',
                 message=f'',
@@ -75,6 +75,7 @@ class GetCode(CreateView):
             )
 
     def post(self, request, *args, **kwargs):
+        print(request.POST)
         if 'code' in request.POST:
             user = request.path.split('/')[-1]
             if OneTimeCode.objects.filter(code=request.POST['code'], user=user).exists():
