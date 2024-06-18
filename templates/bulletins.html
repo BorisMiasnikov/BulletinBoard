@@ -8,8 +8,8 @@
 
 {% block content %}
 {% for bul in bulletins %}
-    <h1>{{bul.title}}</h1>
-    <h1>{{bul.text}}</h1>
-    <h1>{{bul.date_in|date:'d M Y H:i'}}</h1>
+<h1>{{bul.title}}</h1>
+<h1>{{bul.text}}</h1>
+<h1>{{bul.date_in|date:'d M Y H:i'}}</h1>
 {% endfor %}
 {% endblock content %}

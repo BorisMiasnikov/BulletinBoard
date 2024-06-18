@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView
 
-from sign.views import BaseRegisterView
+from sign.views import BaseRegisterView, GetCode
 
 urlpatterns = [
     path('login/',
@@ -17,4 +17,8 @@ urlpatterns = [
     path('logout_confirm/',
          TemplateView.as_view(template_name='logout_confirm.html'),
          name='logout_confirm'),
+    path('code/<str:user>',
+         GetCode.as_view,
+         name='code'),
 ]
+
