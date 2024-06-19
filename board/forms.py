@@ -1,5 +1,6 @@
 from django import forms
-from .models import Bulletin
+from .models import Bulletin, Feedback
+
 
 class BulletinForm(forms.ModelForm):
     class Meta:
@@ -22,3 +23,16 @@ class BulletinForm(forms.ModelForm):
         }
 
 
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = [
+            'text',
+        ]
+        labels = {
+            'text':"Содержание",
+        }
+        widgets = {
+            'title': forms.Textarea(attrs={'class': 'form-text', 'cols': 70, 'rows': 3}),
+            'text': forms.Textarea(attrs={'class': 'form-text', 'cols': 70, 'rows': 10}),
+        }

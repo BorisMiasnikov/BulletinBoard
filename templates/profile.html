@@ -1,0 +1,22 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Личный кабинет {{ user.username }}
+{% endblock title %}
+
+
+{% block content %}
+<h1>{{user.username}}</h1>
+<h1>{{user.email}}</h1>
+<h1>Объявления автора</h1>
+
+{% for bul in bulletins %}
+<h1>{{bul.title}}</h1>
+<h1>{{bul.text}}</h1>
+<h1>{{bul.date_in|date:'d M Y H:i'}}</h1>
+<p style="text-align: center;"><span style="color: #808080; background-color: #ccffff;">Отклики </span>
+</p>
+
+{% endfor %}
+{% endblock content %}

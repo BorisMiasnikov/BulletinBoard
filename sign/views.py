@@ -48,10 +48,8 @@ class GetCode(CreateView):
             )
 
     def post(self, request, *args, **kwargs):
-        print('до условия')
         print(request.POST)
         if 'code' in request.POST:  # означает что code.html делает POST запрос
-            print('если условие сработает')
             user = request.path.split('/')[-1]
             if OneTimeCode.objects.filter(code=request.POST['code'], user=user).exists():
                 User.objects.filter(username=user).update(is_active=True)
