@@ -22,11 +22,13 @@ class BaseRegisterView(CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        print(form.is_valid())
         if form.is_valid():
+            print('форма валидна')
             user = form.save(commit=False)  # забираем объект не сохраненной формы
             user.is_active = False  # делаем юзера не активным и сохраняем
             user.save()
-        return redirect('code', request.POST['username'])
+            return redirect('code', request.POST['username'])
 
 
 class GetCode(CreateView):
@@ -47,6 +49,7 @@ class GetCode(CreateView):
 
     def post(self, request, *args, **kwargs):
         print('до условия')
+        print(request.POST)
         if 'code' in request.POST:  # означает что code.html делает POST запрос
             print('если условие сработает')
             user = request.path.split('/')[-1]

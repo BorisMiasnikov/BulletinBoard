@@ -9,7 +9,7 @@
 {% block content %}
 <form action="" method="post">
     {% csrf_token %}
-    <input type="text" value="code" placeholder="Введите код с почты"/>
+    <input type="text" name="code" placeholder="Введите код с почты">
     <input type="submit" value="Save"/>
 </form>
 {% endblock content %}
