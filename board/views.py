@@ -40,15 +40,23 @@ class BulletinCreate(LoginRequiredMixin, CreateView):
         return context
 
 
-class Profile(DetailView):
+class Profile(LoginRequiredMixin, ListView):
     model = User
     template_name = 'profile.html'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # self.category = get_object_or_404(Category, id = self.kwargs['pk'])
+        # queryset = Post.objects.filter(category=self.category).order_by('-data_in')
+        print(queryset)
+        return queryset
 
     def get_context_data(self, **kwargs):
+        print(kwargs)
         pk_user = self.kwargs.get('pk')
         context = super().get_context_data(**kwargs)
         context['bulletins'] = Bulletin.objects.filter(author = pk_user)
+        print(context)
         return context
 
 
