@@ -4,12 +4,18 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 
-from .forms import BulletinForm, FeedbackForm
+from .filters import BulletinFilter
+from .forms import BulletinForm, FeedbackCreateForm
 from .models import Bulletin, Feedback
 
 
 # Нужно показывать объявления, создавать объявления, оставлять отклики, принимать или не принимать отклики автором объявления
 # не авторизованные пользователи могут только просматривать объявления
+
+''' В джанго реализованы методы доступа к авторизованному пользователю из коробки 
+{{ iser.id }} - идентификатор пользователя из шаблона
+request.user.id - доступ к id пользователя в представлениях-функциях
+self.request.user.id - доступ к id пользователя в представлениях-классах'''
 
 
 
@@ -46,14 +52,17 @@ class Profile(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        self.user = User.objects
         # self.category = get_object_or_404(Category, id = self.kwargs['pk'])
         # queryset = Post.objects.filter(category=self.category).order_by('-data_in')
         print(queryset)
+        print(self.request.user)
         return queryset
 
     def get_context_data(self, **kwargs):
+        print(self.request.user.id)
         print(kwargs)
-        pk_user = self.kwargs.get('pk')
+        pk_user = self.request.user.id
         context = super().get_context_data(**kwargs)
         context['bulletins'] = Bulletin.objects.filter(author = pk_user)
         print(context)
@@ -61,21 +70,35 @@ class Profile(LoginRequiredMixin, ListView):
 
 
 class FeedbackCreate(LoginRequiredMixin, CreateView):
-    form_class = FeedbackForm
+    form_class = FeedbackCreateForm
     model = Feedback
     template_name = 'feedback_cteate.html'
     success_url = reverse_lazy('Bulletin_list')
 
     def form_valid(self, form):
-        print(form.POST)
-
-        bull_pk = form.path.split('/')[-2]
-        print(bull_pk)
-
+        # bulletin_pk = self.request.path.split('/')[-2] #Это один из способов получения из адресной строки
+        bulletin_pk = self.kwargs.get('pk') #Это другой способ получения ид, без адресной строки, но как?...
         post = form.save(commit=False)
-        post.author = self.request.user.author
-        post.bulletin = bull_pk
+        post.author = self.request.user
+        post.bulletin_id = bulletin_pk
         post.save()
         return super().form_valid(form)
+
+
+
+class FeedbackList(LoginRequiredMixin, ListView):
+    model = Feedback
+    template_name = 'feedbacks.html'
+    context_object_name = 'feedbacks'
+
+    def get_queryset(self,**kwargs):
+        # Получаем обычный queryser список объектов модели
+        queryset = super().get_queryset()
+        return queryset.filter(bulletin_id= self.request.path.split('/')[-2])
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['filterset'] = self.filterset
+    #     return context
 
 

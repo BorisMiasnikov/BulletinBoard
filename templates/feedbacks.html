@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Доска объявлений
+{% endblock title %}
+
+
+{% block content %}
+{% for feedback in feedbacks %}
+<h1>{{feedback.title}}</h1>
+<h1>{{feedback.text}}</h1>
+<h1>{{feedback.accepted}}</h1>
+{% endfor %}
+{% endblock content %}

@@ -23,7 +23,7 @@ class BulletinForm(forms.ModelForm):
         }
 
 
-class FeedbackForm(forms.ModelForm):
+class FeedbackCreateForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = [
