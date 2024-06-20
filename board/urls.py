@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BulletinList, BulletinDetail, BulletinCreate, Profile, FeedbackCreate, FeedbackList
+from .views import BulletinList, BulletinDetail, BulletinCreate, Profile, FeedbackCreate, FeedbackList, accept, refuze
 
 urlpatterns = [
     path('bulletins/', BulletinList.as_view(), name='Bulletin_list'),
@@ -8,5 +8,7 @@ urlpatterns = [
     path('profile/', Profile.as_view(), name='Profile'),
     path('bulletins/<int:pk>/feedback', FeedbackCreate.as_view(), name='Feedback_create'),
     path('bulletins/<int:pk>/feedbacks', FeedbackList.as_view(), name='Feedback_list'),
+    path('feedback/<int:pk>/accept', accept, name='Accept'),
+    path('feedback/<int:pk>/refuze', refuze, name='Refuze'),
 
 ]

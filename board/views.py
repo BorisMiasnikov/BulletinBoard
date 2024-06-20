@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render
@@ -94,24 +95,28 @@ class FeedbackList(LoginRequiredMixin, ListView):
     def get_queryset(self,**kwargs):
         # Получаем обычный queryser список объектов модели
         queryset = super().get_queryset()
+        # self.pk = get_object_or_404(Feedback)
+        print(self.kwargs['pk'])
         return queryset.filter(bulletin_id= self.request.path.split('/')[-2])
 
-# @login_required
-# def accept(request, pk):
-#     user = request.user
-#     category = Category.objects.get(id=pk)
-#     category.subscriber.add(user)
-#
-#     massage = 'Вы подтвердили отклик'
-#     return render(request, 'subscriber.html', {'category':category, 'massage':massage})
-#
-#
-# @login_required
-# def refuze(request, pk):
-#     user = request.user
-#     category = Category.objects.get(id=pk)
-#     category.subscriber.add(user)
-#
-#     massage = 'Это успешная подписка на'
-#     return render(request, 'subscriber.html', {'category':category, 'massage':massage})
-#
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['feedback'] = self.text
+        return context
+
+
+@login_required
+def accept(request, pk):
+    user = request.user
+    feedback = Feedback.objects.filter(id=pk).update(accepted = True) #Делает обновление только одной строки и один запрос
+    massage = 'Вы подтвердили отклик'
+    return reverse_lazy('Feedback_list')
+
+
+@login_required
+def refuze(request, pk):
+    user = request.user
+    feedback = Feedback.objects.filter(id=pk).delete()  # Делает обновление только одной строки и один запрос
+    massage = 'Вы удалили отклик'
+    return reverse_lazy('Feedback_list')
+

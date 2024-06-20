@@ -11,8 +11,8 @@
 <h1>{{feedback.title}}</h1>
 <h1>{{feedback.text}}</h1>
     {% if feedback.accepted == None %}
-        <p class="text-left"><a href="{% url 'Feedback_list' feedback.id %}" class="btn btn-secondary btm-sm">Принять</a></p>
-        <p class="text-right"><a href="{% url 'Feedback_list' feedback.id %}" class="btn btn-secondary btm-sm">Отказать</a></p>
+        <p class="text-left"><a href="{% url 'Accept' feedback.id %}" class="btn btn-secondary btm-sm">Принять</a></p>
+        <p class="text-right"><a href="{% url 'Refuze' feedback.id %}" class="btn btn-secondary btm-sm">Отказать</a></p>
     {% endif %}
 {% endfor %}
 {% endblock content %}
