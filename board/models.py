@@ -31,3 +31,5 @@ class Feedback(models.Model):  # сущность отклика
     bulletin = models.ForeignKey(Bulletin, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     accepted = models.BooleanField(null=True)
+
+

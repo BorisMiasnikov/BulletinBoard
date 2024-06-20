@@ -10,6 +10,9 @@
 {% for feedback in feedbacks %}
 <h1>{{feedback.title}}</h1>
 <h1>{{feedback.text}}</h1>
-<h1>{{feedback.accepted}}</h1>
+    {% if feedback.accepted == None %}
+        <p class="text-left"><a href="{% url 'Feedback_list' feedback.id %}" class="btn btn-secondary btm-sm">Принять</a></p>
+        <p class="text-right"><a href="{% url 'Feedback_list' feedback.id %}" class="btn btn-secondary btm-sm">Отказать</a></p>
+    {% endif %}
 {% endfor %}
 {% endblock content %}

@@ -96,9 +96,22 @@ class FeedbackList(LoginRequiredMixin, ListView):
         queryset = super().get_queryset()
         return queryset.filter(bulletin_id= self.request.path.split('/')[-2])
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['filterset'] = self.filterset
-    #     return context
-
-
+# @login_required
+# def accept(request, pk):
+#     user = request.user
+#     category = Category.objects.get(id=pk)
+#     category.subscriber.add(user)
+#
+#     massage = 'Вы подтвердили отклик'
+#     return render(request, 'subscriber.html', {'category':category, 'massage':massage})
+#
+#
+# @login_required
+# def refuze(request, pk):
+#     user = request.user
+#     category = Category.objects.get(id=pk)
+#     category.subscriber.add(user)
+#
+#     massage = 'Это успешная подписка на'
+#     return render(request, 'subscriber.html', {'category':category, 'massage':massage})
+#
