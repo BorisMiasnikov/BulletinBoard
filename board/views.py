@@ -14,7 +14,7 @@ from .models import Bulletin, Feedback
 # не авторизованные пользователи могут только просматривать объявления
 
 ''' В джанго реализованы методы доступа к авторизованному пользователю из коробки 
-{{ iser.id }} - идентификатор пользователя из шаблона
+{{ user.id }} - идентификатор пользователя из шаблона
 request.user.id - доступ к id пользователя в представлениях-функциях
 self.request.user.id - доступ к id пользователя в представлениях-классах'''
 
@@ -95,13 +95,15 @@ class FeedbackList(LoginRequiredMixin, ListView):
     def get_queryset(self,**kwargs):
         # Получаем обычный queryser список объектов модели
         queryset = super().get_queryset()
-        # self.pk = get_object_or_404(Feedback)
-        print(self.kwargs['pk'])
-        return queryset.filter(bulletin_id= self.request.path.split('/')[-2])
+        author_bulletin = Bulletin.objects.get(pk = self.kwargs['pk']).author_id
+        print(self.request.user.id == author_bulletin)
+        if self.request.user.id == author_bulletin:
+            return queryset.filter(bulletin_id= self.request.path.split('/')[-2])
+            # return queryset.filter(bulletin_id=self.kwargs['pk'])# - тоже рабочий способ получения пк
+        return queryset.none()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['feedback'] = self.text
         return context
 
 
