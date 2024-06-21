@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 
+from BulletinBoard import settings
 from .filters import BulletinFilter
 from .forms import BulletinForm, FeedbackCreateForm
 from .models import Bulletin, Feedback
@@ -43,7 +45,6 @@ class BulletinCreate(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         return context
 
 
@@ -56,17 +57,12 @@ class Profile(LoginRequiredMixin, ListView):
         self.user = User.objects
         # self.category = get_object_or_404(Category, id = self.kwargs['pk'])
         # queryset = Post.objects.filter(category=self.category).order_by('-data_in')
-        print(queryset)
-        print(self.request.user)
         return queryset
 
     def get_context_data(self, **kwargs):
-        print(self.request.user.id)
-        print(kwargs)
         pk_user = self.request.user.id
         context = super().get_context_data(**kwargs)
         context['bulletins'] = Bulletin.objects.filter(author = pk_user)
-        print(context)
         return context
 
 
@@ -109,18 +105,31 @@ class FeedbackList(LoginRequiredMixin, ListView):
 
 @login_required
 def accept(request, pk):
-    user = request.user
+    user_pk = Feedback.objects.filter(id=pk)[0].author_id
+    user_email = User.objects.get(id=user_pk).email
     feedback = Feedback.objects.filter(id=pk).update(accepted = True) #Делает обновление только одной строки и один запрос
-    massage = 'Вы подтвердили отклик'
+    send_mail(
+        subject=f'Тут информация по вашему отклику',
+        message=f'Ваш отклик подтверждет автором объявления',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+    )
     response = redirect('Profile')
     return response
 
 
 @login_required
 def refuze(request, pk):
+    user_pk = Feedback.objects.filter(id=pk)[0].author_id
+    user_email = User.objects.get(id=user_pk).email
     user = request.user
     feedback = Feedback.objects.filter(id=pk).delete()  # Делает обновление только одной строки и один запрос
-    massage = 'Вы удалили отклик'
+    send_mail(
+        subject=f'Тут информация по вашему отклику',
+        message=f'Ваш отклик не подтвержден автором объявления',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+    )
     response = redirect('Profile')
     return response
 
