@@ -17,6 +17,7 @@
 <h1>{{bul.date_in|date:'d M Y H:i'}}</h1>
 <p style="text-align: center;"><span style="color: #808080; background-color: #ccffff;">Отклики </span>
 </p>
+<p class="text-left"><a href="{% url 'Feedback_list' bul.id %}" class="btn btn-secondary btm-sm">Отклики</a></p>
 
 {% endfor %}
 {% endblock content %}
