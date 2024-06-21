@@ -13,14 +13,11 @@ board.apps.BoardConfig'''
 @receiver(post_save, sender=Feedback)
 def notifY_about_new_feedback(sender, instance, **kwargs):
     # в инстанс находится объект Feedback
-    feedback = instance.id
-    bulletin_id = Feedback.objects.get(id=feedback).bulletin_id
-    author_id = Bulletin.objects.get(pk=bulletin_id).author_id
-    email = User.objects.get(id=author_id).email
+    email = instance.bulletin.author.email
 
     send_mail(
         subject=f'Вам письмо',
-        message=f'Ваше объяевление {Bulletin.objects.get(pk=bulletin_id).title} получило отклик',
+        message=f'Ваше объяевление {instance.bulletin.title} получило отклик',
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[email],
     )
