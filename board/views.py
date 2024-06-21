@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 
@@ -110,7 +110,8 @@ def accept(request, pk):
     user = request.user
     feedback = Feedback.objects.filter(id=pk).update(accepted = True) #Делает обновление только одной строки и один запрос
     massage = 'Вы подтвердили отклик'
-    return reverse_lazy('Feedback_list')
+    response = redirect('Profile')
+    return response
 
 
 @login_required
@@ -118,5 +119,7 @@ def refuze(request, pk):
     user = request.user
     feedback = Feedback.objects.filter(id=pk).delete()  # Делает обновление только одной строки и один запрос
     massage = 'Вы удалили отклик'
-    return reverse_lazy('Feedback_list')
+    response = redirect('Profile')
+    return response
+
 
